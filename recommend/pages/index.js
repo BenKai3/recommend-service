@@ -1,5 +1,8 @@
 import Image from "next/image";
+import Link from "next/link";
 import { Geist, Geist_Mono } from "next/font/google";
+import Navigation from '../components/Navigation';
+
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -16,25 +19,26 @@ export default function Home() {
     <div
       className={`${geistSans.className} ${geistMono.className} grid grid-rows-[20px_1fr_20px] items-center justify-items-center min-h-screen p-8 pb-20 gap-16 sm:p-20 font-[family-name:var(--font-geist-sans)]`}
     >
+      <Navigation />
       <header>Recommend</header>
       <main className="flex flex-col gap-[32px] row-start-2 items-center sm:items-start">
-       <a
+       <Link
           href="/login"
           className="bg-[#0070f3] text-white px-4 py-2 rounded-md hover:bg-[#005bb5] transition-colors"
         >
           Login
-        </a>
-        <a
+        </Link>
+        <Link
           href="/register"
           className="bg-[#0070f3] text-white px-4 py-2 rounded-md hover:bg-[#005bb5] transition-colors"
         >
           Register
-        </a>
-        <a
+        </Link>
+        <Link
           href="/dashboard"
           className="bg-[#0070f3] text-white px-4 py-2 rounded-md hover:bg-[#005bb5] transition-colors">
           Dashboard
-        </a>
+        </Link>
       </main>
       <footer className="row-start-3 flex gap-[24px] flex-wrap items-center justify-center">
         

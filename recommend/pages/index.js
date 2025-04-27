@@ -1,48 +1,47 @@
-import Image from "next/image";
+// pages/index.js
+//import Image from "next/image";
 import Link from "next/link";
 import { Geist, Geist_Mono } from "next/font/google";
-import Navigation from '../components/Navigation';
-
+import Navigation from "../components/Navigation";
 
 const geistSans = Geist({
-  variable: "--font-geist-sans",
-  subsets: ["latin"],
+	variable: "--font-geist-sans",
+	subsets: ["latin"],
 });
 
 const geistMono = Geist_Mono({
-  variable: "--font-geist-mono",
-  subsets: ["latin"],
+	variable: "--font-geist-mono",
+	subsets: ["latin"],
 });
 
 export default function Home() {
-  return (
-    <div
-      className={`${geistSans.className} ${geistMono.className} grid grid-rows-[20px_1fr_20px] items-center justify-items-center min-h-screen p-8 pb-20 gap-16 sm:p-20 font-[family-name:var(--font-geist-sans)]`}
-    >
-      <Navigation />
-      <header>Recommend</header>
-      <main className="flex flex-col gap-[32px] row-start-2 items-center sm:items-start">
-       <Link
-          href="/login"
-          className="bg-[#0070f3] text-white px-4 py-2 rounded-md hover:bg-[#005bb5] transition-colors"
-        >
-          Login
-        </Link>
-        <Link
-          href="/register"
-          className="bg-[#0070f3] text-white px-4 py-2 rounded-md hover:bg-[#005bb5] transition-colors"
-        >
-          Register
-        </Link>
-        <Link
-          href="/dashboard"
-          className="bg-[#0070f3] text-white px-4 py-2 rounded-md hover:bg-[#005bb5] transition-colors">
-          Dashboard
-        </Link>
-      </main>
-      <footer className="row-start-3 flex gap-[24px] flex-wrap items-center justify-center">
-        
-      </footer>
-    </div>
-  );
+	return (
+		<div
+			className={`${geistSans.className} ${geistMono.className} grid grid-rows-[20px_1fr_20px] items-center justify-items-center min-h-screen p-8 pb-20 gap-16 sm:p-20 font-[family-name:var(--font-geist-sans)]`}
+		>
+			<Navigation />
+			<header>Recommend</header>
+			<main className="flex flex-col gap-[32px] row-start-2 items-center sm:items-start">
+				<Link
+					href="/login"
+					className="bg-[#0070f3] text-white px-4 py-2 rounded-md hover:bg-[#005bb5] transition-colors"
+				>
+					Login
+				</Link>
+				<Link
+					href="/register"
+					className="bg-[#0070f3] text-white px-4 py-2 rounded-md hover:bg-[#005bb5] transition-colors"
+				>
+					Register
+				</Link>
+				<Link
+					href="/dashboard"
+					className="bg-[#0070f3] text-white px-4 py-2 rounded-md hover:bg-[#005bb5] transition-colors"
+				>
+					Dashboard
+				</Link>
+			</main>
+			<footer className="row-start-3 flex gap-[24px] flex-wrap items-center justify-center"></footer>
+		</div>
+	);
 }

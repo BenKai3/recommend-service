@@ -1,4 +1,4 @@
-# Recommend - Service Layer && UI
+# Recommend - Service Layer & UI
 
 ## Overview
 

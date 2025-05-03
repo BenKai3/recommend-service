@@ -90,6 +90,25 @@ export default function ListDetail() {
 		setItems((prev) => prev.filter((it) => it.id !== itemId));
 	};
 
+	// if we failed to load a list, show the error
+	if (error && !list) {
+		return (
+			<div className="min-h-screen bg-gray-100">
+				<Navigation />
+				<div className="max-w-2xl mx-auto p-4">
+					<p className="text-red-500 text-center">{error}</p>
+					<button
+						onClick={() => router.push("/lists")}
+						className="mt-4 bg-blue-500 text-white px-4 py-2 rounded"
+					>
+						Back to all lists
+					</button>
+				</div>
+			</div>
+		);
+	}
+
+	// if it's still loading (rather than an error), bail out silently
 	if (!list) return null;
 
 	return (

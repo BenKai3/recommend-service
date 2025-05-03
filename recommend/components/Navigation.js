@@ -42,7 +42,7 @@ export default function Navigation() {
 								href="/users"
 								className="text-white hover:underline"
 							>
-								Find Friends
+								Follow Users
 							</Link>
 						</li>
 					</>

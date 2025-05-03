@@ -12,13 +12,15 @@ export default async function handler(req, res) {
 		const { data, error } = await supabase
 			.from("lists")
 			.select(
-				`id, title, is_public, list_items (id, media_item_id, media_items!inner (id, title, type, genre))`
+				`id, title, is_public, user_id, list_items ( id, media_item_id, media_items!inner (id, title, type, genre))`
 			)
 			.eq("id", id)
 			.single();
 		if (error) return res.status(404).json({ error: "List not found" });
+
 		if (!data.is_public && data.user_id !== userId)
 			return res.status(403).json({ error: "Forbidden" });
+
 		return res.status(200).json(data);
 	}
 

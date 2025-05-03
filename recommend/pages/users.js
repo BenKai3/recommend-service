@@ -43,7 +43,11 @@ export default function UsersPage() {
 		<div className="min-h-screen bg-gray-100">
 			<Navigation />
 			<div className="max-w-lg mx-auto p-4">
-				<h1 className="text-2xl font-bold mb-4">Find Users</h1>
+				<h1 className="text-2xl font-bold mb-4">Find users by name</h1>
+				<p className="mb-4">
+					Search for users by their name to follow them. <br />
+					You can also view their lists and media.
+				</p>
 				<div className="flex mb-4">
 					<input
 						className="border p-2 flex-1"

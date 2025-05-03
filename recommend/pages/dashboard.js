@@ -74,7 +74,7 @@ export default function Dashboard() {
 			<div className="max-w-6xl mx-auto mt-8 grid grid-cols-2 gap-6 p-6 bg-white rounded shadow">
 				{/* Lists Column */}
 				<div>
-					<h1 className="text-3xl font-bold mb-4">Your Lists</h1>
+					<h1 className="text-3xl font-bold mb-4">Your Dashboard</h1>
 					{error && <p className="text-red-500 mb-4">{error}</p>}
 					{lists.length === 0 ? (
 						<p>You have no lists.</p>

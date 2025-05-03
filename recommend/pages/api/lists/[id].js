@@ -12,16 +12,7 @@ export default async function handler(req, res) {
 		const { data, error } = await supabase
 			.from("lists")
 			.select(
-				`
-                id,
-                title,
-                is_public,
-                list_items (
-                    id,
-                    media_item_id,
-                    media_items!inner (id, title, type, genre)
-                )
-            `
+				`id, title, is_public, list_items (id, media_item_id, media_items!inner (id, title, type, genre))`
 			)
 			.eq("id", id)
 			.single();
@@ -43,8 +34,21 @@ export default async function handler(req, res) {
 	}
 
 	if (req.method === "DELETE") {
+		// delete dependent list_items first
+		const { error: itemsErr } = await supabase
+			.from("list_items")
+			.delete()
+			.eq("list_id", id);
+		if (itemsErr) {
+			return res.status(500).json({ error: itemsErr.message });
+		}
+
+		// delete the list
 		const { error } = await supabase.from("lists").delete().eq("id", id);
-		if (error) return res.status(500).json({ error: error.message });
+		if (error) {
+			return res.status(500).json({ error: error.message });
+		}
+
 		return res.status(204).end();
 	}
 

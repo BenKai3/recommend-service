@@ -3,7 +3,7 @@ import { useState, useEffect } from "react";
 import { useRouter } from "next/router";
 import Navigation from "../../components/Navigation";
 import MediaSearch from "../../components/MediaSearch";
-import DeleteListButton from "../../components/deleteListButton";
+import DeleteListButton from "../../components/DeleteListButton";
 
 export default function ListDetail() {
 	const [list, setList] = useState(null);
@@ -17,13 +17,10 @@ export default function ListDetail() {
 	// Fetch list details and user's own lists
 	useEffect(() => {
 		const token = localStorage.getItem("token");
-		if (!token) {
+		if (!token || !id) {
 			router.push("/login");
 			return;
 		}
-
-		if (!id) return;
-		setError("");
 
 		// List items
 		(async () => {
@@ -121,14 +118,24 @@ export default function ListDetail() {
 						<h1 className="text-2xl font-bold text-black">
 							{list.title}
 						</h1>
-						<DeleteListButton listId={id} />
+						<p className="text-gray-500">
+							Update your list or view it&apos;s contents
+						</p>
+						{list.is_owner && (
+							<DeleteListButton
+								listId={id}
+								ownerId={list.user_id}
+							/>
+						)}
 					</div>
-					<MediaSearch
-						listId={id}
-						onAdd={(newItem) =>
-							setItems((prev) => [newItem, ...prev])
-						}
-					/>
+					{list.is_owner && (
+						<MediaSearch
+							listId={id}
+							onAdd={(newItem) =>
+								setItems((prev) => [newItem, ...prev])
+							}
+						/>
+					)}
 					{error && <p className="text-red-500 mb-4">{error}</p>}
 					<ul className="space-y-2">
 						{items.map((it) => (

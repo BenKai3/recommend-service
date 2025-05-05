@@ -12,7 +12,14 @@ export default async function handler(req, res) {
 		const { data, error } = await supabase
 			.from("lists")
 			.select(
-				`id, title, is_public, user_id, list_items ( id, media_item_id, media_items!inner (id, title, type, genre))`
+				`id, title, is_public, user_id,
+				    list_items (
+				      id,
+				      media_item_id,
+				      rating,
+				      review_text,
+				      media_items!inner (id, title, type, genre)
+				    )`
 			)
 			.eq("id", id)
 			.single();
@@ -21,7 +28,10 @@ export default async function handler(req, res) {
 		if (!data.is_public && data.user_id !== userId)
 			return res.status(403).json({ error: "Forbidden" });
 
-		return res.status(200).json(data);
+		return res.status(200).json({
+			...data,
+			is_owner: data.user_id === userId,
+		});
 	}
 
 	if (req.method === "PUT") {
@@ -36,6 +46,16 @@ export default async function handler(req, res) {
 	}
 
 	if (req.method === "DELETE") {
+		// make sure this list really belongs to the current user
+		const { data: ownerCheck, error: ownerErr } = await supabase
+			.from("lists")
+			.select("user_id")
+			.eq("id", id)
+			.single();
+		if (ownerErr || ownerCheck.user_id !== userId) {
+			return res.status(403).json({ error: "Forbidden" });
+		}
+
 		// delete dependent list_items first
 		const { error: itemsErr } = await supabase
 			.from("list_items")

@@ -1,4 +1,4 @@
-// pages/api/[id]/lists/[itemId].js
+// pages/api/lists/[id]/items/[itemId].js
 import { supabase } from "../../../../../lib/supabaseServer";
 import { getUserIdFromReq } from "../../../../../lib/auth";
 
@@ -27,6 +27,6 @@ export default async function handler(req, res) {
 		return res.status(204).end();
 	}
 
-	res.setHeader("Allow", ["DELETE"]);
+	res.setHeader("Allow", ["DELETE", "PATCH"]);
 	res.status(405).end(`Method ${req.method} Not Allowed`);
 }

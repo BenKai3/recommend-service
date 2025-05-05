@@ -7,18 +7,27 @@ export default async function handler(req, res) {
 	if (!me) return res.status(401).json({ error: "Unauthorized" });
 
 	try {
+		// embed the 'users' row for followed_id under the alias 'followed_user'
 		const { data, error } = await supabase
 			.from("follows")
-			// Embed the 'users' record where users.id = follows.followed_id
-			.select("followed_id, users!follows_followed_id_fkey(id, name)")
+			.select(
+				`
+        followed_id,
+        followed_user:users!follows_followed_id_fkey (
+          id,
+          name
+        )
+      `
+			)
 			.eq("follower_id", me);
 
 		if (error) throw error;
 
-		const following = data.map((f) => {
-			const userRec = f["users!follows_followed_id_fkey"] || {};
-			return { id: f.followed_id, name: userRec.name };
-		});
+		// now every row has .followed_user
+		const following = data.map((row) => ({
+			id: row.followed_user.id,
+			name: row.followed_user.name,
+		}));
 
 		return res.status(200).json(following);
 	} catch (err) {

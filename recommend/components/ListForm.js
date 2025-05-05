@@ -9,47 +9,60 @@ export default function ListForm({ onCreate }) {
 	const handleSubmit = async (e) => {
 		e.preventDefault();
 		setError("");
-		const token = localStorage.getItem("token");
-		const res = await fetch("/api/lists", {
-			method: "POST",
-			headers: {
-				"Content-Type": "application/json",
-				Authorization: `Bearer ${token}`,
-			},
-			body: JSON.stringify({ title, is_public: isPublic }),
-		});
-		const data = await res.json();
-		if (!res.ok) return setError(data.error);
-		onCreate(data);
-		setTitle("");
+		if (!title.trim()) {
+			setError("Title is required");
+			return;
+		}
+		try {
+			const token = localStorage.getItem("token");
+			const res = await fetch("/api/lists", {
+				method: "POST",
+				headers: {
+					"Content-Type": "application/json",
+					Authorization: `Bearer ${token}`,
+				},
+				body: JSON.stringify({ title, is_public: isPublic }),
+			});
+			const data = await res.json();
+			if (!res.ok) throw new Error(data.error || "Failed to create list");
+			onCreate(data);
+			setTitle("");
+			setIsPublic(false);
+		} catch (err) {
+			setError(err.message);
+		}
 	};
 
 	return (
 		<form
 			onSubmit={handleSubmit}
-			className="mb-4 p-4 bg-white rounded shadow"
+			className="mb-4 flex items-center justify-between"
 		>
-			<h2 className="font-bold mb-2">Create New List</h2>
-			<input
-				className="border p-2 mr-2"
-				placeholder="List title"
-				value={title}
-				onChange={(e) => setTitle(e.target.value)}
-				required
-			/>
-			<label className="mr-2">
+			<div className="flex items-center space-x-4 flex-1">
 				<input
-					type="checkbox"
-					checked={isPublic}
-					onChange={(e) => setIsPublic(e.target.checked)}
-					className="mr-1"
+					type="text"
+					placeholder="New list title"
+					value={title}
+					onChange={(e) => setTitle(e.target.value)}
+					className="flex-1 border p-2 rounded"
 				/>
-				Public
-			</label>
-			<button className="bg-blue-500 text-white px-3 py-1 rounded">
+				<label className="flex items-center space-x-1">
+					<input
+						type="checkbox"
+						checked={isPublic}
+						onChange={(e) => setIsPublic(e.target.checked)}
+						className="form-checkbox"
+					/>
+					<span>Public</span>
+				</label>
+			</div>
+			<button
+				type="submit"
+				className="ml-4 bg-blue-500 text-white px-4 py-2 rounded"
+			>
 				Create
 			</button>
-			{error && <p className="text-red-500 mt-2">{error}</p>}
+			{error && <p className="text-red-500 text-sm mt-2">{error}</p>}
 		</form>
 	);
 }

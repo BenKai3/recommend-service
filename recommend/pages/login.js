@@ -24,8 +24,8 @@ export default function Login() {
 		if (!res.ok) {
 			setError(data.error || "Login failed");
 		} else {
-			// Save token in localStorage (consider cookies for production)
 			localStorage.setItem("token", data.token);
+			localStorage.setItem("userName", data.user.name);
 			// Redirect to dashboard on successful login
 			router.push("/dashboard");
 		}
